@@ -4,13 +4,11 @@ parameter
           (pair %request
              (pair (option %program string) (string %specification))
              (pair (timestamp %deadline) (option %whitelist (set address))))
-          (nat %declare_to_undertake))
+          (pair %submit_proof
+             nat
+             (option (pair :Proof_market.proof (option %program string) (option %proof string)))))
        (or :sum
-          (or :sum
-             (pair %submit_proof
-                nat
-                (option (pair :Proof_market.proof (option %program string) (option %proof string))))
-             (pair %judge nat (or :Proof_market.judge (int %ProofApproved) string)))
+          (pair %judge nat (or :Proof_market.judge (int %ProofApproved) string))
           (or :sum (pair %register address (option (int :Proof_market.role))) (address %ban)))) ;
 storage
   (pair :storage
@@ -31,37 +29,37 @@ storage
 code { { /* top defs */ } ;
        { /* entry point init */ DUP ; CDR ; DIP { CAR } } ;
        { /* entry point code */
-         { /* var global_param_1223 */ DIG 1 ; DUP ; DUG 2 } ;
+         { /* var global_param_1224 */ DIG 1 ; DUP ; DUG 2 } ;
          IF_LEFT
            { DUP
-             /* var l_1224 */ ;
+             /* var l_1225 */ ;
              IF_LEFT
-               { { /* __v_1256 */
-                   { /* var storage_1222 */ DIG 2 ; DUP ; DUG 3 } ;
+               { { /* __v_1255 */
+                   { /* var storage_1223 */ DIG 2 ; DUP ; DUG 3 } ;
                    CAR ;
                    PUSH unit Unit ;
                    DROP ;
                    SENDER ;
                    GET } ;
                  DUP
-                 /* var __v_1256 */ ;
+                 /* var __v_1255 */ ;
                  IF_NONE
                    { PUSH string "You are not registered as a requester." ; FAILWITH }
                    { PUSH (int :Proof_market.role) 0 ;
-                     { /* var __x_1257 */ DIG 1 ; DUP ; DUG 2 } ;
+                     { /* var __x_1256 */ DIG 1 ; DUP ; DUG 2 } ;
                      COMPARE ;
                      EQ ;
                      IF { PUSH unit Unit }
                         { PUSH string "You are not registered as a requester." ; FAILWITH } ;
                      DIP { DROP } } ;
                  DIP { DROP }
-                 /* clean __v_1256 */ ;
+                 /* clean __v_1255 */ ;
                  DROP ;
-                 { /* __x_1248 */ { /* var storage_1222 */ DIG 2 ; DUP ; DUG 3 } ; CDR ; CDR } ;
-                 { /* __x_1244 */ PUSH unit Unit ; DROP ; AMOUNT } ;
-                 { /* __x_1240 */
+                 { /* __x_1247 */ { /* var storage_1223 */ DIG 2 ; DUP ; DUG 3 } ; CDR ; CDR } ;
+                 { /* __x_1243 */ PUSH unit Unit ; DROP ; AMOUNT } ;
+                 { /* __x_1239 */
                    PUSH (option (or :Proof_market.judge (int %ProofApproved) string)) None ;
-                   { /* var __x_1244 */ DIG 1 ; DUP ; DUG 2 } ;
+                   { /* var __x_1243 */ DIG 1 ; DUP ; DUG 2 } ;
                    PAIR ;
                    PUSH (option (pair :Proof_market.proof (option %program string) (option %proof string)))
                         None ;
@@ -72,78 +70,98 @@ code { { /* top defs */ } ;
                    SENDER ;
                    PAIR ;
                    PAIR ;
-                   { /* var l_1226 */ DIG 3 ; DUP ; DUG 4 } ;
-                   { /* var __x_1248 */ DIG 3 ; DUP ; DUG 4 } ;
+                   { /* var l_1227 */ DIG 3 ; DUP ; DUG 4 } ;
+                   { /* var __x_1247 */ DIG 3 ; DUP ; DUG 4 } ;
                    PAIR ;
                    PAIR } ;
                  PUSH nat 1 ;
-                 { /* var __x_1248 */ DIG 3 ; DUP ; DUG 4 } ;
+                 { /* var __x_1247 */ DIG 3 ; DUP ; DUG 4 } ;
                  ADD ;
-                 { /* var storage_1222 */ DIG 6 ; DUP ; DUG 7 } ;
+                 { /* var storage_1223 */ DIG 6 ; DUP ; DUG 7 } ;
                  CDR ;
                  CAR ;
-                 { /* var __x_1240 */ DIG 2 ; DUP ; DUG 3 } ;
+                 { /* var __x_1239 */ DIG 2 ; DUP ; DUG 3 } ;
                  SOME ;
-                 { /* var __x_1248 */ DIG 5 ; DUP ; DUG 6 } ;
+                 { /* var __x_1247 */ DIG 5 ; DUP ; DUG 6 } ;
                  UPDATE ;
                  PAIR ;
-                 { /* var storage_1222 */ DIG 6 ; DUP ; DUG 7 } ;
+                 { /* var storage_1223 */ DIG 6 ; DUP ; DUG 7 } ;
                  CAR ;
                  PAIR ;
                  NIL operation ;
                  PAIR ;
                  DIP { DROP 4 }
-                 /* clean __x_1240, clean __x_1244, clean __x_1248 */ }
-               { { /* __v_1304 */
-                   { /* var storage_1222 */ DIG 2 ; DUP ; DUG 3 } ;
+                 /* clean __x_1239, clean __x_1243, clean __x_1247 */ }
+               { { /* __l_1313 */ DUP /* var r_1228 */ ; CAR } ;
+                 { /* __r_1312 */ { /* var r_1228 */ DIG 1 ; DUP ; DUG 2 } ; CDR } ;
+                 { /* __v_1303 */
+                   { /* var storage_1223 */ DIG 4 ; DUP ; DUG 5 } ;
                    CAR ;
                    PUSH unit Unit ;
                    DROP ;
                    SENDER ;
                    GET } ;
                  DUP
-                 /* var __v_1304 */ ;
+                 /* var __v_1303 */ ;
                  IF_NONE
                    { PUSH string "You are not registered as a prover." ; FAILWITH }
                    { PUSH (int :Proof_market.role) 1 ;
-                     { /* var __x_1305 */ DIG 1 ; DUP ; DUG 2 } ;
+                     { /* var __x_1304 */ DIG 1 ; DUP ; DUG 2 } ;
                      COMPARE ;
                      EQ ;
                      IF { PUSH unit Unit }
                         { PUSH string "You are not registered as a prover." ; FAILWITH } ;
                      DIP { DROP } } ;
                  DIP { DROP }
-                 /* clean __v_1304 */ ;
+                 /* clean __v_1303 */ ;
                  DROP ;
-                 { /* __x_1296 */ PUSH unit Unit ; DROP ; SENDER } ;
-                 { /* __x_1292 */
-                   { /* __v_1290 */
-                     { /* var storage_1222 */ DIG 3 ; DUP ; DUG 4 } ;
+                 { /* __x_1295 */ PUSH unit Unit ; DROP ; SENDER } ;
+                 { /* __x_1291 */
+                   { /* __v_1289 */
+                     { /* var storage_1223 */ DIG 5 ; DUP ; DUG 6 } ;
                      CDR ;
                      CAR ;
-                     { /* var r_1227 */ DIG 2 ; DUP ; DUG 3 } ;
+                     { /* var __l_1313 */ DIG 3 ; DUP ; DUG 4 } ;
                      GET } ;
                    DUP
-                   /* var __v_1290 */ ;
+                   /* var __v_1289 */ ;
                    IF_NONE
-                     { { /* var r_1227 */ DIG 2 ; DUP ; DUG 3 } ;
+                     { { /* var __l_1313 */ DIG 3 ; DUP ; DUG 4 } ;
                        PUSH string "No request of the id" ;
                        PAIR ;
                        FAILWITH }
-                     { { /* __v_1284 */ DUP /* var __x_1291 */ ; CDR ; CAR ; CDR } ;
-                       DUP
-                       /* var __v_1284 */ ;
-                       IF_NONE
-                         { { /* var __x_1291 */ DIG 1 ; DUP ; DUG 2 } }
-                         { PUSH string "The request is already taken by other prover" ; FAILWITH } ;
-                       DIP { DROP 2 }
-                       /* clean __v_1284 */ } ;
+                     { DUP /* var __x_1290 */ ; DIP { DROP } } ;
                    DIP { DROP }
-                   /* clean __v_1290 */ } ;
-                 { /* __x_1276 */ PUSH unit Unit ; DROP ; NOW } ;
+                   /* clean __v_1289 */ } ;
+                 { /* __v_1283 */ DUP /* var __x_1291 */ ; CDR ; CAR ; CDR } ;
                  DUP
-                 /* var __x_1276 */ ;
-                 { /* var __x_1292 */ DIG 2 ; DUP ; DUG 3 } ;
+                 /* var __v_1283 */ ;
+                 IF_NONE
+                   { PUSH unit Unit }
+                   { PUSH string "The request is already taken." ; FAILWITH } ;
+                 DIP { DROP }
+                 /* clean __v_1283 */ ;
+                 DROP ;
+                 { /* __v_1277 */ DUP /* var __x_1291 */ ; CAR ; CDR ; CDR ; CDR } ;
+                 DUP
+                 /* var __v_1277 */ ;
+                 IF_NONE
+                   { PUSH unit Unit }
+                   { DUP
+                     /* var __x_1278 */ ;
+                     { /* var __x_1295 */ DIG 4 ; DUP ; DUG 5 } ;
+                     MEM ;
+                     NOT ;
+                     IF { PUSH string "You are not in the whitelist of the request." ; FAILWITH }
+                        { UNIT } ;
+                     DIP { DROP } } ;
+                 DIP { DROP }
+                 /* clean __v_1277 */ ;
+                 DROP ;
+                 { /* __x_1269 */ PUSH unit Unit ; DROP ; NOW } ;
+                 DUP
+                 /* var __x_1269 */ ;
+                 { /* var __x_1291 */ DIG 2 ; DUP ; DUG 3 } ;
                  CAR ;
                  CDR ;
                  CDR ;
@@ -152,372 +170,252 @@ code { { /* top defs */ } ;
                  LT ;
                  IF { PUSH string "Request was closed" ; FAILWITH } { UNIT } ;
                  DROP ;
-                 { /* __v_1274 */ { /* var __x_1292 */ DIG 1 ; DUP ; DUG 2 } ; CAR ; CDR ; CDR ; CDR } ;
-                 DUP
-                 /* var __v_1274 */ ;
-                 IF_NONE
-                   { PUSH unit Unit }
-                   { DUP
-                     /* var __x_1275 */ ;
-                     { /* var __x_1296 */ DIG 5 ; DUP ; DUG 6 } ;
-                     MEM ;
-                     NOT ;
-                     IF { PUSH string "You are not in the whitelist of the request." ; FAILWITH }
-                        { UNIT } ;
-                     DIP { DROP } } ;
-                 DIP { DROP }
-                 /* clean __v_1274 */ ;
-                 DROP ;
-                 { /* __x_1266 */
-                   { /* var __x_1292 */ DIG 1 ; DUP ; DUG 2 } ;
+                 { /* __x_1265 */
+                   { /* var __x_1291 */ DIG 1 ; DUP ; DUG 2 } ;
                    CDR ;
                    CDR ;
-                   PUSH unit Unit ;
-                   DROP ;
-                   SENDER ;
+                   CDR ;
+                   { /* var __r_1312 */ DIG 4 ; DUP ; DUG 5 } ;
+                   PAIR ;
+                   { /* var __x_1295 */ DIG 3 ; DUP ; DUG 4 } ;
                    SOME ;
-                   { /* var __x_1292 */ DIG 3 ; DUP ; DUG 4 } ;
+                   { /* var __x_1291 */ DIG 3 ; DUP ; DUG 4 } ;
                    CDR ;
                    CAR ;
                    CAR ;
                    PAIR ;
                    PAIR ;
-                   { /* var __x_1292 */ DIG 2 ; DUP ; DUG 3 } ;
+                   { /* var __x_1291 */ DIG 2 ; DUP ; DUG 3 } ;
                    CAR ;
                    PAIR } ;
-                 { /* var storage_1222 */ DIG 6 ; DUP ; DUG 7 } ;
+                 { /* var storage_1223 */ DIG 8 ; DUP ; DUG 9 } ;
                  CDR ;
                  CDR ;
-                 { /* var storage_1222 */ DIG 7 ; DUP ; DUG 8 } ;
+                 { /* var storage_1223 */ DIG 9 ; DUP ; DUG 10 } ;
                  CDR ;
                  CAR ;
-                 { /* var __x_1266 */ DIG 2 ; DUP ; DUG 3 } ;
+                 { /* var __x_1265 */ DIG 2 ; DUP ; DUG 3 } ;
                  SOME ;
-                 { /* var r_1227 */ DIG 7 ; DUP ; DUG 8 } ;
+                 { /* var __l_1313 */ DIG 8 ; DUP ; DUG 9 } ;
                  UPDATE ;
                  PAIR ;
-                 { /* var storage_1222 */ DIG 7 ; DUP ; DUG 8 } ;
+                 { /* var storage_1223 */ DIG 9 ; DUP ; DUG 10 } ;
                  CAR ;
                  PAIR ;
                  NIL operation ;
                  PAIR ;
-                 DIP { DROP 5 }
-                 /* clean __x_1266, clean __x_1276, clean __x_1292, clean __x_1296 */ } ;
+                 DIP { DROP 7 }
+                 /* clean __x_1265, clean __x_1269, clean __x_1291, clean __x_1295, clean __r_1312, clean __l_1313 */ } ;
              DIP { DROP } }
            { DUP
-             /* var r_1225 */ ;
+             /* var r_1226 */ ;
              IF_LEFT
-               { DUP
-                 /* var l_1228 */ ;
-                 IF_LEFT
-                   { { /* __l_1352 */ DUP /* var l_1230 */ ; CAR } ;
-                     { /* __r_1351 */ { /* var l_1230 */ DIG 1 ; DUP ; DUG 2 } ; CDR } ;
-                     { /* __v_1342 */
-                       { /* var storage_1222 */ DIG 5 ; DUP ; DUG 6 } ;
-                       CAR ;
-                       PUSH unit Unit ;
-                       DROP ;
-                       SENDER ;
-                       GET } ;
-                     DUP
-                     /* var __v_1342 */ ;
-                     IF_NONE
-                       { PUSH string "You are not registered as a prover." ; FAILWITH }
-                       { PUSH (int :Proof_market.role) 1 ;
-                         { /* var __x_1343 */ DIG 1 ; DUP ; DUG 2 } ;
-                         COMPARE ;
-                         EQ ;
-                         IF { PUSH unit Unit }
-                            { PUSH string "You are not registered as a prover." ; FAILWITH } ;
-                         DIP { DROP } } ;
-                     DIP { DROP }
-                     /* clean __v_1342 */ ;
-                     DROP ;
-                     { /* __x_1334 */ PUSH unit Unit ; DROP ; SENDER } ;
-                     { /* __x_1330 */
-                       { /* __v_1328 */
-                         { /* var storage_1222 */ DIG 6 ; DUP ; DUG 7 } ;
-                         CDR ;
-                         CAR ;
-                         { /* var __l_1352 */ DIG 3 ; DUP ; DUG 4 } ;
-                         GET } ;
-                       DUP
-                       /* var __v_1328 */ ;
-                       IF_NONE
-                         { { /* var __l_1352 */ DIG 3 ; DUP ; DUG 4 } ;
-                           PUSH string "No request of the id" ;
-                           PAIR ;
-                           FAILWITH }
-                         { { /* __v_1322 */ DUP /* var __x_1329 */ ; CDR ; CAR ; CDR } ;
-                           DUP
-                           /* var __v_1322 */ ;
-                           IF_NONE
-                             { { /* var __x_1329 */ DIG 1 ; DUP ; DUG 2 } }
-                             { DUP
-                               /* var __x_1323 */ ;
-                               { /* var __x_1334 */ DIG 5 ; DUP ; DUG 6 } ;
-                               COMPARE ;
-                               NEQ ;
-                               IF { PUSH string "The request is taken by other prover" ; FAILWITH }
-                                  { { /* var __x_1329 */ DIG 2 ; DUP ; DUG 3 } } ;
-                               DIP { DROP } } ;
-                           DIP { DROP 2 }
-                           /* clean __v_1322 */ } ;
-                       DIP { DROP }
-                       /* clean __v_1328 */ } ;
-                     { /* __x_1314 */
-                       DUP
-                       /* var __x_1330 */ ;
-                       CDR ;
-                       CDR ;
-                       CDR ;
-                       { /* var __r_1351 */ DIG 3 ; DUP ; DUG 4 } ;
-                       PAIR ;
-                       { /* var __x_1334 */ DIG 2 ; DUP ; DUG 3 } ;
-                       SOME ;
-                       { /* var __x_1330 */ DIG 2 ; DUP ; DUG 3 } ;
-                       CDR ;
-                       CAR ;
-                       CAR ;
-                       PAIR ;
-                       PAIR ;
-                       { /* var __x_1330 */ DIG 1 ; DUP ; DUG 2 } ;
-                       CAR ;
-                       PAIR } ;
-                     { /* var storage_1222 */ DIG 8 ; DUP ; DUG 9 } ;
-                     CDR ;
-                     CDR ;
-                     { /* var storage_1222 */ DIG 9 ; DUP ; DUG 10 } ;
+               { { /* __l_1385 */ DUP /* var l_1229 */ ; CAR } ;
+                 { /* __r_1384 */ { /* var l_1229 */ DIG 1 ; DUP ; DUG 2 } ; CDR } ;
+                 { /* __x_1373 */
+                   { /* __v_1371 */
+                     { /* var storage_1223 */ DIG 4 ; DUP ; DUG 5 } ;
                      CDR ;
                      CAR ;
-                     { /* var __x_1314 */ DIG 2 ; DUP ; DUG 3 } ;
+                     { /* var __l_1385 */ DIG 2 ; DUP ; DUG 3 } ;
+                     GET } ;
+                   DUP
+                   /* var __v_1371 */ ;
+                   IF_NONE
+                     { PUSH string "No request of the id" ; FAILWITH }
+                     { DUP /* var __x_1372 */ ; DIP { DROP } } ;
+                   DIP { DROP }
+                   /* clean __v_1371 */ } ;
+                 PUSH unit Unit ;
+                 DROP ;
+                 SENDER ;
+                 { /* var __x_1373 */ DIG 1 ; DUP ; DUG 2 } ;
+                 CDR ;
+                 CAR ;
+                 CAR ;
+                 COMPARE ;
+                 NEQ ;
+                 IF { PUSH string "You are not the requester of the request of the id" ;
+                      FAILWITH }
+                    { UNIT } ;
+                 DROP ;
+                 { /* __x_1363 */
+                   { /* __v_1361 */ DUP /* var __x_1373 */ ; CDR ; CAR ; CDR } ;
+                   DUP
+                   /* var __v_1361 */ ;
+                   IF_NONE
+                     { PUSH string "This request is not proved" ; FAILWITH }
+                     { DUP /* var __x_1362 */ ; DIP { DROP } } ;
+                   DIP { DROP }
+                   /* clean __v_1361 */ } ;
+                 { /* __v_1355 */ { /* var __x_1373 */ DIG 1 ; DUP ; DUG 2 } ; CDR ; CDR ; CDR ; CDR } ;
+                 DUP
+                 /* var __v_1355 */ ;
+                 IF_NONE { PUSH unit Unit } { PUSH string "You already judged" ; FAILWITH } ;
+                 DIP { DROP }
+                 /* clean __v_1355 */ ;
+                 DROP ;
+                 { /* var __r_1384 */ DIG 2 ; DUP ; DUG 3 } ;
+                 IF_LEFT
+                   { PUSH int 0 ;
+                     { /* var __l_1349 */ DIG 1 ; DUP ; DUG 2 } ;
+                     COMPARE ;
+                     EQ ;
+                     IF { { /* __x_1326 */
+                            { /* var __r_1384 */ DIG 3 ; DUP ; DUG 4 } ;
+                            SOME ;
+                            { /* var __x_1373 */ DIG 3 ; DUP ; DUG 4 } ;
+                            CDR ;
+                            CDR ;
+                            CDR ;
+                            CAR ;
+                            PAIR ;
+                            { /* var __x_1373 */ DIG 3 ; DUP ; DUG 4 } ;
+                            CDR ;
+                            CDR ;
+                            CAR ;
+                            PAIR ;
+                            { /* var __x_1373 */ DIG 3 ; DUP ; DUG 4 } ;
+                            CDR ;
+                            CAR ;
+                            PAIR ;
+                            { /* var __x_1373 */ DIG 3 ; DUP ; DUG 4 } ;
+                            CAR ;
+                            PAIR } ;
+                          { /* __x_1322 */
+                            { /* __v_1320 */ { /* var __x_1363 */ DIG 2 ; DUP ; DUG 3 } ; CONTRACT unit } ;
+                            DUP
+                            /* var __v_1320 */ ;
+                            IF_NONE
+                              { PUSH string "Invalid address" ; FAILWITH }
+                              { DUP /* var __x_1321 */ ; DIP { DROP } } ;
+                            DIP { DROP }
+                            /* clean __v_1320 */ } ;
+                          { /* var storage_1223 */ DIG 9 ; DUP ; DUG 10 } ;
+                          CDR ;
+                          CDR ;
+                          { /* var storage_1223 */ DIG 10 ; DUP ; DUG 11 } ;
+                          CDR ;
+                          CAR ;
+                          { /* var __x_1326 */ DIG 3 ; DUP ; DUG 4 } ;
+                          SOME ;
+                          { /* var __l_1385 */ DIG 9 ; DUP ; DUG 10 } ;
+                          UPDATE ;
+                          PAIR ;
+                          { /* var storage_1223 */ DIG 10 ; DUP ; DUG 11 } ;
+                          CAR ;
+                          PAIR ;
+                          NIL operation ;
+                          { /* var __x_1322 */ DIG 2 ; DUP ; DUG 3 } ;
+                          { /* var __x_1373 */ DIG 7 ; DUP ; DUG 8 } ;
+                          CDR ;
+                          CDR ;
+                          CDR ;
+                          CAR ;
+                          PUSH unit Unit ;
+                          TRANSFER_TOKENS ;
+                          CONS ;
+                          PAIR ;
+                          DIP { DROP 2 }
+                          /* clean __x_1322, clean __x_1326 */ }
+                        { UNIT ; FAILWITH } ;
+                     DIP { DROP } }
+                   { { /* __x_1340 */
+                       { /* __v_1338 */
+                         { /* var __x_1373 */ DIG 2 ; DUP ; DUG 3 } ;
+                         CDR ;
+                         CAR ;
+                         CAR ;
+                         CONTRACT unit } ;
+                       DUP
+                       /* var __v_1338 */ ;
+                       IF_NONE
+                         { PUSH string "Invalid address" ; FAILWITH }
+                         { DUP /* var __x_1339 */ ; DIP { DROP } } ;
+                       DIP { DROP }
+                       /* clean __v_1338 */ } ;
+                     { /* __x_1330 */
+                       { /* var __r_1384 */ DIG 4 ; DUP ; DUG 5 } ;
+                       SOME ;
+                       { /* var __x_1373 */ DIG 4 ; DUP ; DUG 5 } ;
+                       CDR ;
+                       CDR ;
+                       CDR ;
+                       CAR ;
+                       PAIR ;
+                       { /* var __x_1373 */ DIG 4 ; DUP ; DUG 5 } ;
+                       CDR ;
+                       CDR ;
+                       CAR ;
+                       PAIR ;
+                       { /* var __x_1373 */ DIG 4 ; DUP ; DUG 5 } ;
+                       CDR ;
+                       CAR ;
+                       PAIR ;
+                       { /* var __x_1373 */ DIG 4 ; DUP ; DUG 5 } ;
+                       CAR ;
+                       PAIR } ;
+                     { /* var storage_1223 */ DIG 9 ; DUP ; DUG 10 } ;
+                     CDR ;
+                     CDR ;
+                     { /* var storage_1223 */ DIG 10 ; DUP ; DUG 11 } ;
+                     CDR ;
+                     CAR ;
+                     { /* var __x_1330 */ DIG 2 ; DUP ; DUG 3 } ;
                      SOME ;
-                     { /* var __l_1352 */ DIG 7 ; DUP ; DUG 8 } ;
+                     { /* var __l_1385 */ DIG 9 ; DUP ; DUG 10 } ;
                      UPDATE ;
                      PAIR ;
-                     { /* var storage_1222 */ DIG 9 ; DUP ; DUG 10 } ;
+                     { /* var storage_1223 */ DIG 10 ; DUP ; DUG 11 } ;
                      CAR ;
                      PAIR ;
                      NIL operation ;
-                     PAIR ;
-                     DIP { DROP 6 }
-                     /* clean __x_1314, clean __x_1330, clean __x_1334, clean __r_1351, clean __l_1352 */ }
-                   { { /* __l_1430 */ DUP /* var r_1231 */ ; CAR } ;
-                     { /* __r_1429 */ { /* var r_1231 */ DIG 1 ; DUP ; DUG 2 } ; CDR } ;
-                     { /* __x_1418 */
-                       { /* __v_1416 */
-                         { /* var storage_1222 */ DIG 5 ; DUP ; DUG 6 } ;
-                         CDR ;
-                         CAR ;
-                         { /* var __l_1430 */ DIG 2 ; DUP ; DUG 3 } ;
-                         GET } ;
-                       DUP
-                       /* var __v_1416 */ ;
-                       IF_NONE
-                         { PUSH string "No request of the id" ; FAILWITH }
-                         { DUP /* var __x_1417 */ ; DIP { DROP } } ;
-                       DIP { DROP }
-                       /* clean __v_1416 */ } ;
-                     PUSH unit Unit ;
-                     DROP ;
-                     SENDER ;
-                     { /* var __x_1418 */ DIG 1 ; DUP ; DUG 2 } ;
+                     { /* var __x_1340 */ DIG 3 ; DUP ; DUG 4 } ;
+                     { /* var __x_1373 */ DIG 7 ; DUP ; DUG 8 } ;
+                     CDR ;
+                     CDR ;
                      CDR ;
                      CAR ;
-                     CAR ;
-                     COMPARE ;
-                     NEQ ;
-                     IF { PUSH string "You are not the requester of the request of the id" ;
-                          FAILWITH }
-                        { UNIT } ;
-                     DROP ;
-                     { /* __x_1408 */
-                       { /* __v_1406 */ DUP /* var __x_1418 */ ; CDR ; CAR ; CDR } ;
-                       DUP
-                       /* var __v_1406 */ ;
-                       IF_NONE
-                         { PUSH string "This request is not undertaken" ; FAILWITH }
-                         { DUP /* var __x_1407 */ ; DIP { DROP } } ;
-                       DIP { DROP }
-                       /* clean __v_1406 */ } ;
-                     { /* __v_1400 */ { /* var __x_1418 */ DIG 1 ; DUP ; DUG 2 } ; CDR ; CDR ; CAR } ;
-                     DUP
-                     /* var __v_1400 */ ;
-                     IF_NONE
-                       { PUSH string "This request is not proved" ; FAILWITH }
-                       { PUSH unit Unit ; DIP { DROP } } ;
-                     DIP { DROP }
-                     /* clean __v_1400 */ ;
-                     DROP ;
-                     { /* __v_1394 */ { /* var __x_1418 */ DIG 1 ; DUP ; DUG 2 } ; CDR ; CDR ; CDR ; CDR } ;
-                     DUP
-                     /* var __v_1394 */ ;
-                     IF_NONE { PUSH unit Unit } { PUSH string "You already judged" ; FAILWITH } ;
-                     DIP { DROP }
-                     /* clean __v_1394 */ ;
-                     DROP ;
-                     { /* var __r_1429 */ DIG 2 ; DUP ; DUG 3 } ;
-                     IF_LEFT
-                       { PUSH int 0 ;
-                         { /* var __l_1388 */ DIG 1 ; DUP ; DUG 2 } ;
-                         COMPARE ;
-                         EQ ;
-                         IF { { /* __x_1365 */
-                                { /* var __r_1429 */ DIG 3 ; DUP ; DUG 4 } ;
-                                SOME ;
-                                { /* var __x_1418 */ DIG 3 ; DUP ; DUG 4 } ;
-                                CDR ;
-                                CDR ;
-                                CDR ;
-                                CAR ;
-                                PAIR ;
-                                { /* var __x_1418 */ DIG 3 ; DUP ; DUG 4 } ;
-                                CDR ;
-                                CDR ;
-                                CAR ;
-                                PAIR ;
-                                { /* var __x_1418 */ DIG 3 ; DUP ; DUG 4 } ;
-                                CDR ;
-                                CAR ;
-                                PAIR ;
-                                { /* var __x_1418 */ DIG 3 ; DUP ; DUG 4 } ;
-                                CAR ;
-                                PAIR } ;
-                              { /* __x_1361 */
-                                { /* __v_1359 */ { /* var __x_1408 */ DIG 2 ; DUP ; DUG 3 } ; CONTRACT unit } ;
-                                DUP
-                                /* var __v_1359 */ ;
-                                IF_NONE
-                                  { PUSH string "Invalid address" ; FAILWITH }
-                                  { DUP /* var __x_1360 */ ; DIP { DROP } } ;
-                                DIP { DROP }
-                                /* clean __v_1359 */ } ;
-                              { /* var storage_1222 */ DIG 10 ; DUP ; DUG 11 } ;
-                              CDR ;
-                              CDR ;
-                              { /* var storage_1222 */ DIG 11 ; DUP ; DUG 12 } ;
-                              CDR ;
-                              CAR ;
-                              { /* var __x_1365 */ DIG 3 ; DUP ; DUG 4 } ;
-                              SOME ;
-                              { /* var __l_1430 */ DIG 9 ; DUP ; DUG 10 } ;
-                              UPDATE ;
-                              PAIR ;
-                              { /* var storage_1222 */ DIG 11 ; DUP ; DUG 12 } ;
-                              CAR ;
-                              PAIR ;
-                              NIL operation ;
-                              { /* var __x_1361 */ DIG 2 ; DUP ; DUG 3 } ;
-                              { /* var __x_1418 */ DIG 7 ; DUP ; DUG 8 } ;
-                              CDR ;
-                              CDR ;
-                              CDR ;
-                              CAR ;
-                              PUSH unit Unit ;
-                              TRANSFER_TOKENS ;
-                              CONS ;
-                              PAIR ;
-                              DIP { DROP 2 }
-                              /* clean __x_1361, clean __x_1365 */ }
-                            { UNIT ; FAILWITH } ;
-                         DIP { DROP } }
-                       { { /* __x_1379 */
-                           { /* __v_1377 */
-                             { /* var __x_1418 */ DIG 2 ; DUP ; DUG 3 } ;
-                             CDR ;
-                             CAR ;
-                             CAR ;
-                             CONTRACT unit } ;
-                           DUP
-                           /* var __v_1377 */ ;
-                           IF_NONE
-                             { PUSH string "Invalid address" ; FAILWITH }
-                             { DUP /* var __x_1378 */ ; DIP { DROP } } ;
-                           DIP { DROP }
-                           /* clean __v_1377 */ } ;
-                         { /* __x_1369 */
-                           { /* var __r_1429 */ DIG 4 ; DUP ; DUG 5 } ;
-                           SOME ;
-                           { /* var __x_1418 */ DIG 4 ; DUP ; DUG 5 } ;
-                           CDR ;
-                           CDR ;
-                           CDR ;
-                           CAR ;
-                           PAIR ;
-                           { /* var __x_1418 */ DIG 4 ; DUP ; DUG 5 } ;
-                           CDR ;
-                           CDR ;
-                           CAR ;
-                           PAIR ;
-                           { /* var __x_1418 */ DIG 4 ; DUP ; DUG 5 } ;
-                           CDR ;
-                           CAR ;
-                           PAIR ;
-                           { /* var __x_1418 */ DIG 4 ; DUP ; DUG 5 } ;
-                           CAR ;
-                           PAIR } ;
-                         { /* var storage_1222 */ DIG 10 ; DUP ; DUG 11 } ;
-                         CDR ;
-                         CDR ;
-                         { /* var storage_1222 */ DIG 11 ; DUP ; DUG 12 } ;
-                         CDR ;
-                         CAR ;
-                         { /* var __x_1369 */ DIG 2 ; DUP ; DUG 3 } ;
-                         SOME ;
-                         { /* var __l_1430 */ DIG 9 ; DUP ; DUG 10 } ;
-                         UPDATE ;
-                         PAIR ;
-                         { /* var storage_1222 */ DIG 11 ; DUP ; DUG 12 } ;
-                         CAR ;
-                         PAIR ;
-                         NIL operation ;
-                         { /* var __x_1379 */ DIG 3 ; DUP ; DUG 4 } ;
-                         { /* var __x_1418 */ DIG 7 ; DUP ; DUG 8 } ;
-                         CDR ;
-                         CDR ;
-                         CDR ;
-                         CAR ;
-                         PUSH unit Unit ;
-                         TRANSFER_TOKENS ;
-                         CONS ;
-                         PAIR ;
-                         DIP { DROP 3 }
-                         /* clean __x_1369, clean __x_1379 */ } ;
-                     DIP { DROP 5 }
-                     /* clean __x_1408, clean __x_1418, clean __r_1429, clean __l_1430 */ } ;
-                 DIP { DROP } }
+                     PUSH unit Unit ;
+                     TRANSFER_TOKENS ;
+                     CONS ;
+                     PAIR ;
+                     DIP { DROP 3 }
+                     /* clean __x_1330, clean __x_1340 */ } ;
+                 DIP { DROP 5 }
+                 /* clean __x_1363, clean __x_1373, clean __r_1384, clean __l_1385 */ }
                { DUP
-                 /* var r_1229 */ ;
+                 /* var r_1230 */ ;
                  IF_LEFT
-                   { { /* __l_1447 */ DUP /* var l_1232 */ ; CAR } ;
-                     { /* __r_1446 */ { /* var l_1232 */ DIG 1 ; DUP ; DUG 2 } ; CDR } ;
-                     { /* __v_1437 */
-                       { /* var storage_1222 */ DIG 5 ; DUP ; DUG 6 } ;
+                   { { /* __l_1444 */ DUP /* var l_1231 */ ; CAR } ;
+                     { /* __r_1443 */ { /* var l_1231 */ DIG 1 ; DUP ; DUG 2 } ; CDR } ;
+                     { /* __v_1434 */
+                       { /* var storage_1223 */ DIG 5 ; DUP ; DUG 6 } ;
                        CAR ;
                        PUSH unit Unit ;
                        DROP ;
                        SENDER ;
                        GET } ;
                      DUP
-                     /* var __v_1437 */ ;
+                     /* var __v_1434 */ ;
                      IF_NONE
                        { PUSH string "You are not an administorator." ; FAILWITH }
                        { PUSH (int :Proof_market.role) 2 ;
-                         { /* var __x_1438 */ DIG 1 ; DUP ; DUG 2 } ;
+                         { /* var __x_1435 */ DIG 1 ; DUP ; DUG 2 } ;
                          COMPARE ;
                          EQ ;
-                         IF { { /* var storage_1222 */ DIG 7 ; DUP ; DUG 8 } ;
+                         IF { { /* var storage_1223 */ DIG 7 ; DUP ; DUG 8 } ;
                               CAR ;
-                              { /* var __l_1447 */ DIG 4 ; DUP ; DUG 5 } ;
+                              { /* var __l_1444 */ DIG 4 ; DUP ; DUG 5 } ;
                               MEM ;
                               IF { PUSH string "the address is already registered" ; FAILWITH } { UNIT } ;
                               DROP ;
-                              { /* var storage_1222 */ DIG 7 ; DUP ; DUG 8 } ;
+                              { /* var storage_1223 */ DIG 7 ; DUP ; DUG 8 } ;
                               CDR ;
-                              { /* var storage_1222 */ DIG 8 ; DUP ; DUG 9 } ;
+                              { /* var storage_1223 */ DIG 8 ; DUP ; DUG 9 } ;
                               CAR ;
-                              { /* var __r_1446 */ DIG 4 ; DUP ; DUG 5 } ;
-                              { /* var __l_1447 */ DIG 6 ; DUP ; DUG 7 } ;
+                              { /* var __r_1443 */ DIG 4 ; DUP ; DUG 5 } ;
+                              { /* var __l_1444 */ DIG 6 ; DUP ; DUG 7 } ;
                               UPDATE ;
                               PAIR ;
                               NIL operation ;
@@ -525,28 +423,28 @@ code { { /* top defs */ } ;
                             { PUSH string "You are not an administorator." ; FAILWITH } ;
                          DIP { DROP } } ;
                      DIP { DROP 4 }
-                     /* clean __v_1437, clean __r_1446, clean __l_1447 */ }
-                   { { /* __v_1454 */
-                       { /* var storage_1222 */ DIG 3 ; DUP ; DUG 4 } ;
+                     /* clean __v_1434, clean __r_1443, clean __l_1444 */ }
+                   { { /* __v_1451 */
+                       { /* var storage_1223 */ DIG 3 ; DUP ; DUG 4 } ;
                        CAR ;
                        PUSH unit Unit ;
                        DROP ;
                        SENDER ;
                        GET } ;
                      DUP
-                     /* var __v_1454 */ ;
+                     /* var __v_1451 */ ;
                      IF_NONE
                        { PUSH string "You are not an administorator" ; FAILWITH }
                        { PUSH (int :Proof_market.role) 2 ;
-                         { /* var __x_1455 */ DIG 1 ; DUP ; DUG 2 } ;
+                         { /* var __x_1452 */ DIG 1 ; DUP ; DUG 2 } ;
                          COMPARE ;
                          EQ ;
-                         IF { { /* var storage_1222 */ DIG 5 ; DUP ; DUG 6 } ;
+                         IF { { /* var storage_1223 */ DIG 5 ; DUP ; DUG 6 } ;
                               CDR ;
-                              { /* var storage_1222 */ DIG 6 ; DUP ; DUG 7 } ;
+                              { /* var storage_1223 */ DIG 6 ; DUP ; DUG 7 } ;
                               CAR ;
                               PUSH (option (int :Proof_market.role)) None ;
-                              { /* var r_1233 */ DIG 5 ; DUP ; DUG 6 } ;
+                              { /* var r_1232 */ DIG 5 ; DUP ; DUG 6 } ;
                               UPDATE ;
                               PAIR ;
                               NIL operation ;
@@ -554,7 +452,7 @@ code { { /* top defs */ } ;
                             { PUSH string "You are not an administorator" ; FAILWITH } ;
                          DIP { DROP } } ;
                      DIP { DROP 2 }
-                     /* clean __v_1454 */ } ;
+                     /* clean __v_1451 */ } ;
                  DIP { DROP } } ;
              DIP { DROP } } } ;
        DIP { DROP 2 }
