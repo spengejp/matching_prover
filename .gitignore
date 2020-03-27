@@ -1,0 +1,6 @@
+scamlc
+*.cmi
+*.glob
+*.vo
+*.vok
+*.vos
